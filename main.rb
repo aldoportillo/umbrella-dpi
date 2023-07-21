@@ -6,6 +6,8 @@ require "json"
 pp "What's your location? "
 location = gets.chomp
 
+pp "Getting forecast for #{location}..."
+
 #Get Coordinates using Maps API
 
 GMAPS_URI = "https://maps.googleapis.com/maps/api/geocode/json?address=#{location}&key=#{ENV.fetch("GMAPS_KEY")}"
@@ -17,6 +19,7 @@ gmaps_res = JSON.parse(gmaps_req)
 lat = gmaps_res.fetch("results").at(0).fetch("geometry").fetch("location").fetch("lat")
 lng = gmaps_res.fetch("results").at(0).fetch("geometry").fetch("location").fetch("lng")
  
+pp "Your coordinates are #{lat}, #{lng}"
 ## Get weather using Pirate API
 PIRATE_URI = "https://api.pirateweather.net/forecast/#{ENV.fetch("PIRATE_WEATHER_KEY")}/#{lat},#{lng}" #Might need to swap coordinates
 
