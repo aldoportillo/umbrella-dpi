@@ -1,6 +1,7 @@
 # Import Gems
 require "http"
 require "json"
+require 'ascii_charts'
 
 # Get Location
 pp "What's your location? "
@@ -32,15 +33,21 @@ hourly_data_arr = pirate_res.fetch("hourly").fetch("data").slice(0,10)
 
 next_hour_summary = hourly_data_arr.at(0).fetch("summary")
 
-pp "It is currently #{current_temp} F"
+pp "It is currently #{current_temp}°F"
 pp "Next hour: #{next_hour_summary}"
 
 # Map through hourly data to see if we should carry an umbrella
 
 rain = false
 hour_count = 1
+chart_data = []
 
 hourly_data_arr.each{|hour|
+  #For ASCII charts
+  chart_data.push([hour_count, (100 * hour.fetch("precipProbability")).floor()])
+  
+
+  #For printing rain propbabilities
   if(hour.fetch("precipProbability") > 0.10)
     pp "In #{hour_count} hours, there is a #{(100 * hour.fetch("precipProbability")).floor()}% chance of percipitation"
     rain = true
@@ -49,7 +56,13 @@ hourly_data_arr.each{|hour|
  
 }
 
+#Should you carry umbrella ?
+
 if(rain)
+  # Print chart
+  puts ""
+  puts "Hours from now vs Precipitation probability"
+  puts AsciiCharts::Cartesian.new(chart_data, :bar => true, :hide_zero => true).draw
   pp "You might want to carry an umbrella"
 else 
   pp "You probably won't need an umbrella today"
