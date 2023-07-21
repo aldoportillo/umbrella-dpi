@@ -4,7 +4,7 @@ require "json"
 
 #Get Location
 pp "What's your location? "
-location = gets.chomp
+location = "chicago"
 
 #Get Coordinates
 
@@ -12,10 +12,12 @@ URI = "https://maps.googleapis.com/maps/api/geocode/json?address=#{location}&key
 
 req = HTTP.get(URI)
 
-#res = JSON.parse(req)
+res = JSON.parse(req)
 
-#pp res
-
-coordinates
+lat = res.fetch("results").at(0).fetch("geometry").fetch("location").fetch("lat")
+lng = res.fetch("results").at(0).fetch("geometry").fetch("location").fetch("lng")
+ 
+pp lat
+pp lng
 
 pp location
