@@ -26,8 +26,11 @@ PIRATE_URI = "https://api.pirateweather.net/forecast/#{ENV.fetch("PIRATE_WEATHER
 pirate_req = HTTP.get(PIRATE_URI) ##If I were to further this app with a UI, I would write a function for these two to modulate the app...not dry at all
 pirate_res = JSON.parse(pirate_req) 
 
-
-
 current_temp = pirate_res.fetch("currently").fetch("temperature")
 
+hourly_data_arr = pirate_res.fetch("hourly").fetch("data")
+
+next_hour_summary = hourly_data_arr.at(0).fetch("summary")
+
 pp "It is currently #{current_temp} F"
+pp "Next hour: #{next_hour_summary}"
